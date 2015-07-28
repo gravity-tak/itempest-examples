@@ -1,0 +1,15 @@
+RC_DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+export TEMPEST_CONFIG_DIR=$RC_DIR
+export TEMPEST_CONFIG=itempest-vio2-internal.conf
+export TEMPEST_LOG_NAME=itempest-vio2-internal.log
+unset OS_SERVICE_TOKEN
+unset OS_SERVICE_ENDPOINT
+export OS_AUTH_URL=http://10.133.236.40:35357/v2.0
+export OS_REGION_NAME=nova
+export OS_TENANT_NAME=admin
+export OS_USERNAME=admin
+export OS_PASSWORD=openstack
+export NOVA_ENDPOINT_TYPE=internalURL
+export OS_ENDPOINT_TYPE=internalURL
+export CINDER_ENDPOINT_TYPE=internalURL
+

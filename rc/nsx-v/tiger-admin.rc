@@ -1,0 +1,21 @@
+#
+# For each instance of tempest run againt an OpenStack environment
+# you need to have its own tempest config file and tempest log file
+#
+# THINGS to check:
+#
+#   [1] login_url, dashboard_url, uir, uri_v3 and uri are using
+#       the right protocol
+#       host_ip are correct
+#   [2] valueof(TEMPEST_CONFIG) match valueof(log_file@TEMPEST_CONFIG)
+#   [3] public_network_id@TEMPEST_CONFIG match ID of one of "neutron net-external"
+#
+
+RC_DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+export TEMPEST_CONFIG_DIR=$RC_DIR
+export TEMPEST_CONFIG=itempest-tiger.conf
+export TEMPEST_LOG_NAME=itempest-tiger.log
+export OS_AUTH_URL=http://10.34.58.135:5000/v2.0
+export OS_USERNAME=admin
+export OS_PASSWORD=openstack
+export OS_TENANT_NAME=admin

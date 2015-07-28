@@ -1,0 +1,115 @@
+
+{
+    "name": "side2",
+    "networks": [
+        {
+            "name": "internal-network",
+            "subnets": [
+                {
+                    "name": "internal-subnet",
+                    "cidr": "10.10.22.0/24",
+                    "gateway_ip": "10.10.22.1",
+                    "dns_nameservers": ["8.8.8.8", "8.8.4.4"],
+                    "enable_dhcp": true,
+                    "allocation_pools": [
+                        {"start": "10.10.22.2", "end": "10.10.22.99"}
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "fin-network",
+            "subnets": [
+                {
+                    "name": "fin-subnet",
+                    "cidr": "10.168.11.0/24",
+                    "gateway_ip": "10.168.11.1",
+                    "dns_nameservers": ["8.8.8.8", "8.8.4.4"],
+                    "enable_dhcp": true,
+                    "allocation_pools": [
+                        {"start": "10.168.11.2", "end": "10.168.11.99"}
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "service-network",
+            "subnets": [
+                {
+                    "name": "service-subnet",
+                    "cidr": "192.168.11.0/24",
+                    "dns_nameservers": ["8.8.4.4"],
+                    "enable_dhcp": true,
+                    "allocation_pools": [
+                        {"start": "192.168.11.2", "end": "192.168.11.90"}
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "guest-network",
+            "subnets": [
+                {
+                    "name": "guest-subnet",
+                    "cidr": "192.168.33.0/24",
+                    "dns_nameservers": ["8.8.8.8"],
+                    "enable_dhcp": true
+                }
+            ]
+        }
+    ],
+    "router-options": {
+    },
+    "routers": [
+        {
+            "name": "expo-router",
+            "gateway": "public",
+            "interfaces": [
+                "fin-network",
+                "service-network",
+                "guest-network"
+            ]
+        }
+    ],
+    "server-options": {
+        "image": "cirros-0.3.3-x86_64-disk",
+        "flavor": "m1.tiny",
+        "user_data": "./metadata/itempest-userdata"
+    },
+    "servers": [
+        {
+            "name": "fin-acct",
+            "interface": "fin-network"
+        },
+        {
+            "name": "worker-bee",
+            "interfaces": ["service-network", "internal-network"]
+        }
+    ],
+    "security-groups": [
+        {
+            "name": "loginable",
+            "rules": ["ingress-ssh", "ingress-icmp"]
+        },
+        {
+            "name": "internal-path"
+        }
+      }
+    ],
+    "security-group-rules": [
+        {
+            "name": "ingress-ssh",
+            "direction": "ingress",
+            "ethertype": "IPv4",
+            "protocol": "tcp",
+            "port_range_min": 22,
+            "port_range_max": 22
+        },
+        {
+            "name": "ingress-icmp",
+            "direction": "ingress",
+            "ethertype": "IPv4",
+            "protocol": "icmp"
+        }
+    ]
+}
