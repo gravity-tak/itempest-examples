@@ -1,11 +1,11 @@
 {
-    "name": "multi-interfaces",
+    "name": "Sun-side1",
     "networks": [
         {
-            "name": "hill-network",
+            "name": "face-network",
             "subnets": [
                 {
-                    "name": "hill-subnet",
+                    "name": "face-subnet",
                     "cidr": "10.168.11.0/24",
                     "gateway_ip": "10.168.11.1",
                     "dns_nameservers": ["8.8.8.8", "8.8.4.4"],
@@ -31,29 +31,16 @@
             ]
         },
         {
-            "name": "house-network",
+            "name": "fun-network",
             "subnets": [
                 {
-                    "name": "house-subnet",
-                    "cidr": "192.168.12.0/24",
+                    "name": "fun-subnet",
+                    "cidr": "192.168.22.0/24",
+                    "gateway_ip": "192.168.22.99",
                     "dns_nameservers": ["8.8.4.4"],
                     "enable_dhcp": true,
                     "allocation_pools": [
-                        {"start": "192.168.12.2", "end": "192.168.12.90"}
-                    ]
-                }
-            ]
-        },
-        {
-            "name": "top-network",
-            "subnets": [
-                {
-                    "name": "top-subnet",
-                    "cidr": "10.168.33.0/24",
-                    "dns_nameservers": ["8.8.8.8", "8.8.4.4"],
-                    "enable_dhcp": true,
-                    "allocation_pools": [
-                        {"start": "10.168.33.2", "end": "10.168.33.99"}
+                        {"start": "192.168.22.2", "end": "192.168.22.90"}
                     ]
                 }
             ]
@@ -68,39 +55,21 @@
                     "enable_dhcp": true
                 }
             ]
-        },
-        {
-            "name": "who-network",
-            "subnets": [
-                {
-                    "name": "who-subnet",
-                    "cidr": "192.168.34.0/24",
-                    "dns_nameservers": ["8.8.8.8"],
-                    "enable_dhcp": true
-                }
-            ]
         }
     ],
     "router-options": {
     },
     "routers": [
         {
-            "name": "hill-router",
+            "name": "expo-router",
             "gateway": "public",
+            "router_type": "exclusive",
             "interfaces": [
-                "hill-network",
+                "face-network",
                 "service-network",
-                "house-network"
-            ]
-        },
-        {
-            "name": "top-router",
-            "gateway": "public",
-            "interfaces": [
-                "top-network",
-                "guest-network",
-                "who-network"
-            ]
+                "fun-network",
+                "guest-network"
+            ] 
         }
     ],
     "server-options": {
@@ -108,39 +77,22 @@
         "flavor": "m1.tiny",
         "user_data": "./metadata/itempest-userdata"
     },
-    "server-options-ubuntu": {
-        "image": "ubuntu-14.04-x86_64",
-        "flavor": "m1.small",
-        "user_data": "./metadata/itempest-userdata"
-    },
     "servers": [
         {
-            "name": "hill-top",
-            "interface": ["hill-network", "top-network"]
+            "name": "face-acct",
+            "interface": "face-network"
         },
         {
-            "name": "hill-bee",
-            "interface": "hill-network"
-        },
-        {
-            "name": "house-bee",
-            "interface": "house-network"
-        },
-        {
-            "name": "top-bee",
-            "interface": "top-network"
-        },
-        {
-            "name": "service-bee",
+            "name": "worker-bee",
             "interface": "service-network"
+        },
+        {
+            "name": "fun-bee",
+            "interface": "fun-network"
         },
         {
             "name": "guest-bee",
             "interface": "guest-network"
-        },
-        {
-            "name": "who-bee",
-            "interface": "who-network"
         }
     ],
     "security-groups": [
